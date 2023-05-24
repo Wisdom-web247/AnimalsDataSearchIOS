@@ -13,7 +13,10 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
+        
+        searchAnimals = animals
     }
+    
 
     var animals = [
         "Aardvark",
@@ -252,16 +255,33 @@ extension ViewController: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
     
-        return animals.count
+        return searchAnimals.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
         
-        cell.textLabel!.text = animals[indexPath.row]
+        if search {
+            
+            cell.textLabel!.text = searchAnimals[indexPath.row]
+            
+        } else  {
+            
+            cell.textLabel!.text = animals[indexPath.row]
+            
+        }
         
         return cell
+    }
+    
+    func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
+        .delete
+    }
+    
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        table.beginUpdates()
+        animals.remove(at: <#T##Int#>)
     }
 }
 
@@ -272,6 +292,7 @@ extension ViewController: UISearchBarDelegate {
 
         search = true
         TableView.reloadData()
+  
     }
     
 }

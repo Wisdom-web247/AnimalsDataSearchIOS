@@ -10,11 +10,12 @@ import UIKit
 class ViewController: UIViewController {
 
     @IBOutlet weak var TableView: UITableView!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         
-        searchAnimals = animals
+        //searchAnimals = animals
     }
     
 
@@ -255,7 +256,15 @@ extension ViewController: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
     
-        return searchAnimals.count
+        if search {
+            
+            return searchAnimals.count
+        } else  {
+            
+            return animals.count
+        }
+        
+       
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -274,14 +283,16 @@ extension ViewController: UITableViewDataSource, UITableViewDelegate {
         
         return cell
     }
-    
+    //Function to delete an Item from the array list
     func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
         .delete
     }
     
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-        table.beginUpdates()
-        animals.remove(at: <#T##Int#>)
+        tableView.beginUpdates()
+        animals.remove(at: indexPath.row)
+        tableView.deleteRows(at: [indexPath], with: .fade)
+        tableView.endUpdates()
     }
 }
 
